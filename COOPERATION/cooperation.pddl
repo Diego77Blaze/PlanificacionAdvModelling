@@ -55,7 +55,7 @@
 	;El vehiculo se desplaza entre dos posiciones
 	(:durative-action move
 		:parameters(?uv - unmanned_vehicle ?fromX - coordX  ?fromY - coordY ?toX - coordX ?toY - coordY ?mode - navMode)
-		:duration(= ?duration (/(speed ?mode)(distance ?fromX ?fromY ?toX ?toY)))
+		:duration(= ?duration (/(distance ?fromX ?fromY ?toX ?toY)(speed ?mode)))
         :condition(and
 					(at start (has_navMode ?uv ?mode));el vehiculo tiene el modo de navegacion correspondiente
 					(at start (at ?uv ?fromX ?fromY));el vehiculo esta en el origen
