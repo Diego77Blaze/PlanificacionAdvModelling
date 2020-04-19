@@ -1,12 +1,12 @@
-(define (problem cooperation-problem)
+(define (problem cooperation_problem)
 	(:domain cooperation)
 	(:objects
 		dock1 - dock
 		x_1 x_5 x_6 x_10 x_16 - coordX
 		y_1 y_2 y_9 y_10 y_13 - coordY
 		Leader - UGV
-		Follower0 - uav
-		N0 N1 - navmode
+		Follower0 - UAV
+		N0 N1 - navMode
 		P_0 P_45 P_90 P_135 P_180 P_225 P_270 P_315 - pan
 		T_0 T_45 T_90 T_270 T_315 - tilt
 	)
@@ -17,10 +17,10 @@
 		(at Follower0 x_10 y_2)
 		(has_navMode Leader N0)
 		(has_navMode Follower0 N0)
-		(is_horizontal_pan Leader P_180)
-		(is_horizontal_pan Follower0 P_0)
-		(is_horizontal_tilt Leader T_315)
-		(is_horizontal_tilt Follower0 T_0)
+		(is_pan Leader P_45)
+		(is_pan Follower0 P_225)
+		(is_tilt Leader T_270)
+		(is_tilt Follower0 T_0)
 
 		(= (total_time) 0)
 
