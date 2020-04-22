@@ -6,7 +6,6 @@
             pedido - object
             pizza plato - pedido
             moto - object
-
   )
 
 (:predicates
@@ -25,6 +24,7 @@
     (capacidad_moto ?m - moto)
     (carga_actual ?m - moto)
     (distancia ?from ?to - location)
+    (umbral_gasolina)
 )
 
 (:durative-action amasar
@@ -77,20 +77,43 @@
                 (at end (increment (carga_actual) 1)))
 )
 
-(:durative-action entregar_pedido
+(:durative-action desplazarse
   :parameters (?p - pedido ?m - moto ?from - location ?to - location)
   :duration (= ?duration (/(distance ?from ?to)(speed ?mode)))
   :condition (and
                 (at start (at ?from ?m))
                 (at start (not (at ?to ?m)))
+                (at start (> (cantidad_gasolina) (gasolina_requerida)))
+                (at start (> (cantidad_gasolina) (umbral_gasolina)))
+                )
+  :effect (and
+                (at end (at ?to ?m))
+                (at end (not (at ?from ?m)))
+                (at end (decrement (cantidad_gasolina) (gasolina_requerida)))
+)
+
+(:durative-action entregar_pedido
+  :parameters (?p - pedido ?m - moto ?to - location)
+  :duration (= ?duration (/(distance ?from ?to)(speed ?mode)))
+  :condition (and
+                (at start (at ?to ?m))
                 (at start (cargado ?p))
                 (at start (not (entregado ?p ?to)))
                 )
-  :effect (
-                (at end (at ?to ?m))
-                (at end (not (at ?from ?m)))
+  :effect (and
                 (at end (not(cargado ?p)))
                 (at end (entregado ?p ?to))
                 (at end (decrement (carga_actual) 1)))
 )
  ;repostar con umbral de gasolina
+
+ (:durative-action repostar
+   :parameters (?p - pedido ?m - moto ?gasolinera location)
+   :duration (= ?duration (+ (/(distance ?from ?to)(speed ?mode)) 2))
+   :condition (and
+                 (at start (at ?gasolinera ?m))
+                 (at start (< (nivel_gasolina) 20)
+                 )
+   :effect (
+                 (assign nivel_gasolina 100))
+ )
