@@ -1,4 +1,4 @@
-define (problem pizzaproblem)
+(define (problem pizzaproblem)
 (:domain pizza)
 
 (:objects ;object declaration
@@ -37,6 +37,6 @@ define (problem pizzaproblem)
     (entregado macarrones casa3)
 ))
 
-(:metric minimize (distancia)) ;metric declaration
+(:metric minimize (total-time)) ;metric declaration
 
 )
