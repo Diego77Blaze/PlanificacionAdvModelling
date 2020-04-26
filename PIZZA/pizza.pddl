@@ -1,5 +1,5 @@
 (define (domain pizza)
-  (:requirements :typing :durative-actions)
+  (:requirements :typing :durative-actions :fluents :negative-preconditions)
   (:types
    	        location - object
             casa local - location
