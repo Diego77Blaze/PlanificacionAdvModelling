@@ -1,7 +1,7 @@
 (define (domain pizza)
-  (:requirements :typing :durative-actions :fluents :negative-preconditions)
+  (:requirements :typing :equality :durative-actions :fluents :negative-preconditions)
   (:types
-   	        location - object
+        location - object
             casa local - location
             pedido - object
             pizza plato - pedido
@@ -46,7 +46,8 @@
 :condition (and
               (at start (amasada ?p))
               (at start (con_ingredientes ?p))
-              (at start (not (cocinado ?p))))
+              ;(at start (not (cocinado ?p)))
+            )
     :effect (at end (cocinado ?p))
    )
 
@@ -62,7 +63,7 @@
   :duration (= ?duration 1)
   :condition (and
                 (at start (cocinado ?p))
-                (at start (not (cargado ?p)))
+                ;(at start (not (cargado ?p)))
                 (at start (< (carga_actual ?m) (capacidad_moto ?m))))
   :effect (and
                 (at end (cargado ?p))
@@ -74,14 +75,16 @@
   :duration (= ?duration (*(distancia ?from ?to) 2))
   :condition (and
                 (at start (at ?from ?m))
-                (at start (not (at ?to ?m)))
+                (at start (not (= ?from ?to)))
+                ;(at start (not (at ?to ?m)))
                 (at start (> (cantidad_gasolina) (gasolina_requerida ?from ?to)))
                 (at start (> (cantidad_gasolina) (umbral_gasolina)))
                 )
   :effect (and
                 (at end (at ?to ?m))
                 (at end (not (at ?from ?m)))
-                (at end (decrease (cantidad_gasolina) (gasolina_requerida ?from ?to))))
+                (at end (decrease (cantidad_gasolina) (gasolina_requerida ?from ?to)))
+          )
 )
 
 (:durative-action entregar_pedido
@@ -90,7 +93,7 @@
   :condition (and
                 (at start (at ?to ?m))
                 (at start (cargado ?p))
-                (at start (not (entregado ?p ?to)))
+                ;(at start (not (entregado ?p ?to)))
                 )
   :effect (and
                 (at end (not(cargado ?p)))
