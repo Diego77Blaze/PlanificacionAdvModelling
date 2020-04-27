@@ -59,11 +59,11 @@
 )
 
 (:durative-action llenar_moto
-  :parameters (?p - pedido ?m - moto)
+  :parameters (?p - pedido ?m - moto ?l - local)
   :duration (= ?duration 1)
   :condition (and
                 (at start (cocinado ?p))
-                ;(at start (not (cargado ?p)))
+                (at start (at ?l ?m))
                 (at start (< (carga_actual ?m) (capacidad_moto ?m))))
   :effect (and
                 (at end (cargado ?p))
@@ -71,7 +71,7 @@
 )
 
 (:durative-action desplazarse
-  :parameters (?p - pedido ?m - moto ?from - location ?to - location)
+  :parameters (?m - moto ?from - location ?to - location)
   :duration (= ?duration (*(distancia ?from ?to) 2))
   :condition (and
                 (at start (at ?from ?m))
