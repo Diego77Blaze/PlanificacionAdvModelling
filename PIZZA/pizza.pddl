@@ -1,87 +1,89 @@
 (define (domain pizza)
-  (:requirements :typing :equality :durative-actions :fluents :negative-preconditions) ;definicion de los requisitos
-  (:types ;definicion de los tipos
+  (:requirements :typing :equality :durative-actions :fluents :negative-preconditions)
+  (:types
         location - object
-            casa local gasolinera- location
+            casa local - location
             pedido - object
             pizza plato - pedido
             moto - object
   )
 
-(:predicates ;definicion de los predicados
-    (at ?l - location ?m - moto) ;marca donde se encuentra la moto
-    (amasada ?p - pizza) ;valor que indica si la pizza está amasada
-    (con_ingredientes ?s - pizza) ;si está amasada, tendrán que echarse los ingredientes
-    (cocinado ?p - pedido) ;indica si un pedido está cocinado del todo y listo para entregar
-    (cargado ?p - pedido) ;indica si un pedido está cargado en la moto
-    (entregado ?p - pedido ?l - location) ;indica si un pedido ha sido entregado en su respectiva casa
+(:predicates
+    (at ?l - location ?m - moto)
+    (amasada ?p - pizza)
+    (con_ingredientes ?s - pizza)
+    (cocinado ?p - pedido)
+    (cargado ?p - pedido)
+    (entregado ?p - pedido ?l - location)
 )
 
-(:functions ;declaracion de funciones
-    (cantidad_gasolina) ;indica la cantaidad de gasolina actual en la moto
-    (gasolina_requerida ?l1 ?l2 - location) ;indica la gasolina requerida entre dos localizaciones
-    (capacidad_moto ?m - moto) ;indica la capacidad de la moto
-    (carga_actual ?m - moto) ;indica la carga actual de la moto
-    (distancia ?from ?to - location) ;indica la distancia entre dos localizaciones
-    (umbral_gasolina) ;indica el umbral del gasolina que marca cuando se debe parar a repostar
+(:functions
+    (cantidad_gasolina)
+    (gasolina_requerida ?l1 ?l2 - location)
+    (capacidad_moto ?m - moto)
+    (carga_actual ?m - moto)
+    (distancia ?from ?to - location)
+    (umbral_gasolina)
 )
 
-(:durative-action amasar ;accion de amasar la masa
+(:durative-action amasar
   :parameters (?p - pizza)
   :duration (= ?duration 3)
-  :condition (at start (not (amasada ?p))) ;al comienzo no está amasada
-  :effect (at end (amasada ?p));al final se amasa
+  :condition (at start (not (amasada ?p)))
+  :effect (at end (amasada ?p))
  )
 
 (:durative-action echar_ingredientes
 :parameters (?p - pizza)
 :duration (= ?duration 1)
-:condition (at start (not (con_ingredientes ?p)));al comienzo no tiene los ingredientes aún
-:effect (at end (con_ingredientes ?p));al final los tiene
+:condition (at start (not (con_ingredientes ?p)))
+:effect (at end (con_ingredientes ?p))
 )
 
 (:durative-action hornear
 :parameters (?p - pizza)
 :duration (= ?duration 5)
 :condition (and
-              (at start (amasada ?p));al comienzo debe estar amasada
-              (at start (con_ingredientes ?p));y con ingredientes
-              ;(at start (not (cocinado ?p)));pero no cocinada aún
+              (at start (amasada ?p))
+              (at start (con_ingredientes ?p))
+              ;(at start (not (cocinado ?p)))
             )
-    :effect (at end (cocinado ?p));al final debe estar cocinada
+    :effect (at end (cocinado ?p))
    )
 
 (:durative-action cocinar
  :parameters (?s - plato)
  :duration (= ?duration 5)
- :condition (at start (not (cocinado ?s)));al comienzo no debe estar cocinada
- :effect (at end (cocinado ?s));pero al final sí
+ :condition (at start (not (cocinado ?s)))
+ :effect (at end (cocinado ?s))
 )
 
 (:durative-action llenar_moto
   :parameters (?p - pedido ?m - moto ?l - local)
   :duration (= ?duration 1)
   :condition (and
-                (at start (cocinado ?p));para cargar un plato debe estar cocinado
-                (at start (at ?l ?m));la moto debe cargar las cosas en el local
-                (at start (< (carga_actual ?m) (capacidad_moto ?m))));debe haber capacidad suficiente en la moto aún
+                (at start (cocinado ?p))
+                (at start (at ?l ?m))
+                (at start (< (carga_actual ?m) (capacidad_moto ?m))))
   :effect (and
-                (at end (cargado ?p));se carga el pedido
-                (at end (increase (carga_actual ?m) 1)));se incrementa en uno la carga actual de la moto
+                (at end (cargado ?p))
+                (at end (increase (carga_actual ?m) 1)))
 )
 
 (:durative-action desplazarse
   :parameters (?m - moto ?from - location ?to - location)
   :duration (= ?duration (*(distancia ?from ?to) 2))
   :condition (and
-                (at start (at ?from ?m));se está en el inicio
-                (at start (not (= ?from ?to)));no es la misma localización el comienzo que el final
-                (at start (> (cantidad_gasolina) (gasolina_requerida ?from ?to)));debe tener gasolina suficiente para llegar al destino
-                (at start (> (cantidad_gasolina) (umbral_gasolina)));para desplazarse debe tener mas de un 20% de gasolina si contamos que cuenta con un 100%
+                (at start (at ?from ?m))
+                (at start (not (= ?from ?to)))
+                ;(at start (not (at ?to ?m)))
+                (at start (> (cantidad_gasolina) (gasolina_requerida ?from ?to)))
+                (at start (> (cantidad_gasolina) (umbral_gasolina)))
                 )
   :effect (and
-                (at end (at ?to ?m));se moverá al destino
-                (at end (decrease (cantidad_gasolina) (gasolina_requerida ?from ?to)));la cantidad de gasolina decrece lo requerido
+                (at end (at ?to ?m))
+                (at end (not (at ?from ?m)))
+                (at end (decrease (cantidad_gasolina) (gasolina_requerida ?from ?to)))
           )
 )
 
@@ -89,22 +91,24 @@
   :parameters (?p - pedido ?m - moto ?to - location)
   :duration (= ?duration 1)
   :condition (and
-                (at start (at ?to ?m));se encuentra en punto de reparto
-                (at start (cargado ?p));está cargado con el pedido
+                (at start (at ?to ?m))
+                (at start (cargado ?p))
+                ;(at start (not (entregado ?p ?to)))
                 )
   :effect (and
-                (at end (not(cargado ?p)));deja de estar cargado
-                (at end (entregado ?p ?to));porque pasa a estar entregado
-                (at end (decrease (carga_actual ?m) 1)));decrece la carga actual de la moto
+                (at end (not(cargado ?p)))
+                (at end (entregado ?p ?to))
+                (at end (decrease (carga_actual ?m) 1)))
 )
+ ;repostar con umbral de gasolina
 
  (:durative-action repostar
-   :parameters (?p - pedido ?m - moto ?gasolinera - gasolinera)
+   :parameters (?p - pedido ?m - moto ?gasolinera - location)
    :duration (= ?duration 2)
    :condition (and
-                 (at start (at ?gasolinera ?m));tiene que estar en la gasolinera
-                 (at start (< (cantidad_gasolina) 20));tiene que tener menos del 20% de su gasolina
+                 (at start (at ?gasolinera ?m))
+                 (at start (< (cantidad_gasolina) 20))
                  )
-   :effect (at end(assign cantidad_gasolina 100));reposta hasta el 100%
+   :effect (at end(assign cantidad_gasolina 100))
  )
 )
