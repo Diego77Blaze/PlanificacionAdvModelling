@@ -1,8 +1,8 @@
 (define (domain pizza)
   (:requirements :typing :equality :durative-actions :fluents :negative-preconditions) ;definicion de los requisitos
   (:types ;definicion de los tipos
-        location - object
-            casa local gasolinera- location
+            location - object
+            casa local gasolinera - location
             pedido - object
             pizza plato - pedido
             moto - object
@@ -81,12 +81,13 @@
                 )
   :effect (and
                 (at end (at ?to ?m));se moverá al destino
+                (at end (not(at ?from ?m)))
                 (at end (decrease (cantidad_gasolina) (gasolina_requerida ?from ?to)));la cantidad de gasolina decrece lo requerido
           )
 )
 
 (:durative-action entregar_pedido
-  :parameters (?p - pedido ?m - moto ?to - location)
+  :parameters (?p - pedido ?m - moto ?to - casa)
   :duration (= ?duration 1)
   :condition (and
                 (at start (at ?to ?m));se encuentra en punto de reparto
