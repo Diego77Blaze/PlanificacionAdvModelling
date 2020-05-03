@@ -60,14 +60,14 @@
 	)
 	(:constraints
 		(and
-			(preference OUT-DOCK-UAV (always (not(docked Follower0 dock1))))
-			(preference OUT-DOCK-UGV (sometime (docked Leader dock1)))
+			(preference preference1 (always (not(docked Follower0 dock1))))
+			(preference preference2 (sometime (docked Leader dock1)))
 		)
 	)
 	(:metric minimize
 		(+ 	(* 20 (total_time))
-			(* 10 (is-violated OUT-DOCK-UAV))
-			(* 4 (is-violated OUT-DOCK-UGV))
+			(* 10 (is-violated preference1))
+			(* 4 (is-violated preference2))
 		)
 	)
 )
