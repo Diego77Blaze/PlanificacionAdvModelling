@@ -140,19 +140,19 @@
           (at start (at  ?l));esta en el lugar
           (at start (not (moving )));no se esta moviendo
           (at start (not (drilled ?l)));no ha taladrado aun
-          (at start (>= (cantidad_bateria ) (bateria_requerida_fotoslow)));tiene bateria suficiente
+          (at start (>= (cantidad_bateria ) (bateria_requerida_drillslow)));tiene bateria suficiente
           (at start (>= (cantidad_bateria ) (umbral_bateria)));no ha bajado por debajo del umbral
       )
 
       :effect
         (and
               (at end (drilled ?l));se taladra el sitio
-              (at end(decrease (cantidad_bateria )(bateria_requerida_fotoslow)));decrece la bateria
-              (at end(increase (bateria_usada )(bateria_requerida_fotoslow)));incrementa la bateria usada
+              (at end(decrease (cantidad_bateria )(bateria_requerida_drillslow)));decrece la bateria
+              (at end(increase (bateria_usada )(bateria_requerida_drillslow)));incrementa la bateria usada
         )
   )
 
-  (:durative-action drill_fast ;taladrar en modo lento
+  (:durative-action drill_fast ;taladrar en modo rapido
     :parameters
       (
       ?l - location)
@@ -165,19 +165,20 @@
             (at start (at  ?l));esta en el lugar
             (at start (not (moving )));no se esta moviendo
             (at start (not (drilled ?l)));no ha taladrado aun
-            (at start (>= (cantidad_bateria ) (bateria_requerida_fotoslow)));tiene bateria suficiente
+            (at start (>= (cantidad_bateria ) (bateria_requerida_drillfast)));tiene bateria suficiente
             (at start (>= (cantidad_bateria ) (umbral_bateria)));no ha bajado por debajo del umbral
         )
 
         :effect
           (and
                 (at end (drilled ?l));se taladra el sitio
-                (at end(decrease (cantidad_bateria )(bateria_requerida_fotoslow)));decrece la bateria
-                (at end(increase (bateria_usada )(bateria_requerida_fotoslow)));incrementa la bateria usada
+                (at end(decrease (cantidad_bateria )(bateria_requerida_drillfast)));decrece la bateria
+                (at end(increase (bateria_usada )(bateria_requerida_drillfast)));incrementa la bateria usada
           )
   )
 
-  (:durative-action analyseSampleFromPlace_slow ;analiza la muestra de un sitio en modo lento
+
+  (:durative-action analyseSampleFromPlace_slow ;analizar muestra lento
     :parameters
       (
       ?l - location)
@@ -185,23 +186,24 @@
     :duration
       (= ?duration 20)
 
-      (and
-          (at start (at  ?l));esta en el lugar
-          (at start (not (moving )));no se esta moviendo
-          (at start (not (analysed ?l)));no ha tomado la muestra aun
-          (at start (>= (cantidad_bateria ) (bateria_requerida_fotoslow)));tiene bateria suficiente
-          (at start (>= (cantidad_bateria ) (umbral_bateria)));no ha bajado por debajo del umbral
-      )
-
-      :effect
+    :condition
         (and
-              (at end (analysed ?l));se analiza la muestra del sitio
-              (at end(decrease (cantidad_bateria )(bateria_requerida_fotoslow)));decrece la bateria
-              (at end(increase (bateria_usada )(bateria_requerida_fotoslow)));incrementa la bateria usada
+            (at start (at  ?l));esta en el lugar
+            (at start (not (moving )));no se esta moviendo
+            (at start (not (analysed ?l)));no ha tomado la muestra aun
+            (at start (>= (cantidad_bateria ) (bateria_requerida_analyseslow)));tiene bateria suficiente
+            (at start (>= (cantidad_bateria ) (umbral_bateria)));no ha bajado por debajo del umbral
         )
+
+    :effect
+          (and
+                (at end (analysed ?l));se analiza la muestra del sitio
+                (at end(decrease (cantidad_bateria )(bateria_requerida_analyseslow)));decrece la bateria
+                (at end(increase (bateria_usada )(bateria_requerida_analyseslow)));incrementa la bateria usada
+          )
   )
 
-  (:durative-action analyseSampleFromPlace_fast
+  (:durative-action analyseSampleFromPlace_fast ;analizar muestra rápido
     :parameters
       (
       ?l - location)
@@ -214,15 +216,15 @@
             (at start (at  ?l));esta en el lugar
             (at start (not (moving )));no se esta moviendo
             (at start (not (analysed ?l)));no ha tomado la muestra aun
-            (at start (>= (cantidad_bateria ) (bateria_requerida_fotoslow)));tiene bateria suficiente
+            (at start (>= (cantidad_bateria ) (bateria_requerida_analysefast)));tiene bateria suficiente
             (at start (>= (cantidad_bateria ) (umbral_bateria)));no ha bajado por debajo del umbral
         )
 
     :effect
           (and
                 (at end (analysed ?l));se analiza la muestra del sitio
-                (at end(decrease (cantidad_bateria )(bateria_requerida_fotoslow)));decrece la bateria
-                (at end(increase (bateria_usada )(bateria_requerida_fotoslow)));incrementa la bateria usada
+                (at end(decrease (cantidad_bateria )(bateria_requerida_analysefast)));decrece la bateria
+                (at end(increase (bateria_usada )(bateria_requerida_analysefast)));incrementa la bateria usada
           )
   )
 
