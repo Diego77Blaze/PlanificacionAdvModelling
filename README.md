@@ -1,4 +1,13 @@
 # PlanificacionAdvModelling
+Todos los ejercicios han sido realizados por Diego Ortiz Martínez. A lo largo del desarrollo de la práctica, ha surgido la necesidad de usar más de un planificador. Este es el uso particular según el ejercicio:
+
+Ejercicio 1 - Este ejercicio funciona con SGPlan.
+Ejercicio 2 - Este ejercicio funciona con SGPlan.
+Ejercicio 3 - Este ejercicio funciona con Optic.
+Ejercicio 4 - Este ejercicio funciona con SGPlan.
+
+
+A continuación, el dominio del ejercicio 4:
 
 Ejercicio 4 - Dominio
 En este dominio nos encontramos una pequeña pizzería que acaba de abrir y que cuenta solamente con una moto para llevar a cabo sus pedidos.
