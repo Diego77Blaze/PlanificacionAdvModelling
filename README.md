@@ -1,5 +1,6 @@
 # PlanificacionAdvModelling
-Todos los ejercicios han sido realizados por Diego Ortiz Martínez. A lo largo del desarrollo de la práctica, ha surgido la necesidad de usar más de un planificador. Este es el uso particular según el ejercicio:
+Todos los ejercicios han sido realizados por Diego Ortiz Martínez. El enlace de github es el siguiente: https://github.com/Diego77Blaze/PlanificacionAdvModelling
+A lo largo del desarrollo de la práctica, ha surgido la necesidad de usar más de un planificador. Este es el uso particular según el ejercicio:
 
 Ejercicio 1 - Este ejercicio funciona con SGPlan.
 Ejercicio 2 - Este ejercicio funciona con SGPlan.
