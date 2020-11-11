@@ -22,6 +22,7 @@
     (cocinado ?p - pedido) ;indica si un pedido está cocinado del todo y listo para entregar
     (cargado ?p - pedido) ;indica si un pedido está cargado en la moto
     (entregado ?p - pedido ?l - location) ;indica si un pedido ha sido entregado en su respectiva casa
+    (cobrado ?p)
 )
 
 (:functions ;declaracion de funciones
@@ -99,6 +100,7 @@
   :condition (and
                 (at start (at ?to ?m));se encuentra en punto de reparto
                 (at start (cargado ?p));está cargado con el pedido
+                (at start (cobrado ?p))
                 )
   :effect (and
                 (at end (not(cargado ?p)));deja de estar cargado
@@ -114,5 +116,18 @@
                  (at start (< (cantidad_gasolina) 20));tiene que tener menos del 20% de su gasolina
                  )
    :effect (at end(assign cantidad_gasolina 100));reposta hasta el 100%
+ )
+
+
+ (:durative-action coger_dinero
+   :parameters (?p - pedido ?m - moto ?to - casa)
+   :duration (= ?duration 1)
+   :condition (and
+                 (at start (at ?to ?m));tiene que estar en la casa1
+                 (at start (not (cobrado ?p)))
+                 (at start (not (entregado ?p ?to)))
+
+                 )
+   :effect (at end(cobrado ?p))
  )
 )

@@ -9,7 +9,7 @@ slow0 slow1 - slow_lift
 )
 
 (:init
-
+;;person_at Ana n2)
 (person_at p0 n3);where is the people
 (person_at p1 n1)
 
